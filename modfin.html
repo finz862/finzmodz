@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>MODZ FINZ FREE FIRE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{box-sizing:border-box}
+body{
+    margin:0;
+    height:100vh;
+    background:black;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:Arial, sans-serif;
+    color:white;
+    overflow:hidden;
+}
+
+/* MATRIX */
+#matrix{
+    position:fixed;
+    inset:0;
+    z-index:0;
+}
+
+/* WRAP */
+.wrap{
+    position:relative;
+    z-index:1;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+/* JUDUL BESAR */
+.title{
+    font-size:28px;
+    font-weight:900;
+    letter-spacing:2px;
+    margin-bottom:14px;
+    color:#1fffe0;
+    text-shadow:0 0 14px rgba(31,255,224,.95);
+}
+
+/* BOX PANEL */
+.box{
+    width:92%;
+    max-width:720px;
+    background:#0b0b0b;
+    padding:22px 28px;
+    border-radius:16px;
+    box-shadow:
+      0 0 30px rgba(31,255,224,.6),
+      inset 0 0 20px rgba(31,255,224,.08);
+}
+
+/* JUDUL DALAM */
+h2{
+    text-align:center;
+    margin:0 0 18px 0;
+    letter-spacing:1px;
+}
+
+/* MENU */
+.menu{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:14px 0;
+    font-size:16px;
+}
+
+/* SWITCH */
+.switch{
+    position:relative;
+    width:52px;
+    height:26px;
+}
+.switch input{display:none;}
+.slider{
+    position:absolute;
+    inset:0;
+    background:#666;
+    border-radius:26px;
+    cursor:pointer;
+    transition:.3s;
+}
+.slider:before{
+    content:"";
+    position:absolute;
+    width:20px;height:20px;
+    background:white;border-radius:50%;
+    top:3px;left:4px;transition:.3s;
+}
+input:checked + .slider{
+    background:#1fffe0;
+    box-shadow:0 0 10px rgba(31,255,224,.9);
+}
+input:checked + .slider:before{
+    transform:translateX(26px);
+}
+
+/* LOGIN */
+input[type=password]{
+    width:100%;
+    padding:12px;border:none;border-radius:8px;outline:none;
+}
+button{
+    width:100%;
+    padding:12px;margin-top:12px;
+    border:none;border-radius:8px;
+    background:#1fffe0;font-weight:bold;cursor:pointer;
+}
+
+.hidden{display:none}
+.msg{color:#ff6b6b;text-align:center}
+</style>
+</head>
+
+<body>
+<canvas id="matrix"></canvas>
+
+<div class="wrap">
+    <div class="title">MODZ FINZ FREE FIRE</div>
+
+    <!-- LOGIN -->
+    <div class="box" id="loginBox">
+        <h2>ENTER KEY</h2>
+        <input type="password" id="key" placeholder="Masukkan Key">
+        <button onclick="login()">LOGIN</button>
+        <p class="msg" id="msg"></p>
+    </div>
+
+    <!-- MOD MENU -->
+    <div class="box hidden" id="menuBox">
+        <h2>MOD MENU</h2>
+
+        <div class="menu">
+            <span>Aimbot 85%</span>
+            <label class="switch">
+                <input type="checkbox">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="menu">
+            <span>Drag HS 98%</span>
+            <label class="switch">
+                <input type="checkbox">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="menu">
+            <span>Holo Blue</span>
+            <label class="switch">
+                <input type="checkbox">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+</div>
+
+<script>
+/* LOGIN */
+function login(){
+    if(key.value === "finmod19"){
+        loginBox.classList.add("hidden");
+        menuBox.classList.remove("hidden");
+    }else{
+        msg.innerText = "KEY SALAH!";
+    }
+}
+
+/* MATRIX TOSCA */
+const c = document.getElementById("matrix");
+const ctx = c.getContext("2d");
+let w,h,cols,drops;
+const chars = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+function resize(){
+    w = c.width = innerWidth;
+    h = c.height = innerHeight;
+    cols = Math.floor(w / 14);
+    drops = Array(cols).fill(1);
+}
+addEventListener("resize", resize);
+resize();
+
+function draw(){
+    ctx.fillStyle="rgba(0,0,0,0.08)";
+    ctx.fillRect(0,0,w,h);
+    ctx.fillStyle="#1fffe0";
+    ctx.font="14px monospace";
+    for(let i=0;i<drops.length;i++){
+        const t = chars[Math.random()*chars.length|0];
+        ctx.fillText(t, i*14, drops[i]*14);
+        if(drops[i]*14>h && Math.random()>0.975) drops[i]=0;
+        drops[i]++;
+    }
+}
+setInterval(draw,50);
+</script>
+</body>
+</html>
